@@ -6,6 +6,9 @@ package fr.course.bll;
 import java.util.List;
 
 import fr.course.bo.Participant;
+import fr.course.dal.DALException;
+import fr.course.dal.DAOFact;
+import fr.course.dal.dao.ParticipantDAOImpl;
 
 /**
  * @author var_dump
@@ -13,7 +16,7 @@ import fr.course.bo.Participant;
  */
 public class CourseManagerImpl implements CourseManager{
 	
-	//private ParticipantDAOImpl participantDAO = DAOFact.getParticipantDAO();
+	private ParticipantDAOImpl participantDAO = DAOFact.getInstance();
 
 	/*
 	 *	Les contraintes sont les suivantes :
@@ -30,7 +33,7 @@ public class CourseManagerImpl implements CourseManager{
 				
 		try {
 			participantDAO.insert(participant);
-		} catch (ParticipantDAOException e) {
+		} catch (DALException e) {
 			e.printStackTrace();
 			throw new ParticipantManagerException(e.getMessage());
 		}
@@ -39,15 +42,15 @@ public class CourseManagerImpl implements CourseManager{
 	}
 
 	@Override
-	public List<Participant> getAllParticipants() {
+	public List<Participant> getAllParticipants() throws ParticipantManagerException {
 		// TODO Auto-generated method stub
 		
-//		try {
-//			return participantDAO.getAll();
-//		} catch(ParticipantDAOException e) {
-//			e.printStackTrace();
-//			throw new ParticipantManagerException(e.getMessage());
-//		}
+		try {
+			return participantDAO.getAll();
+		} catch(DALException e) {
+			e.printStackTrace();
+			throw new ParticipantManagerException(e.getMessage());
+		}
 		
 	}
 
