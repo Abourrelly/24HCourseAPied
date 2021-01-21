@@ -7,6 +7,7 @@ public class Participant {
     private int age;
     private String sexe;
     private int nDossard;
+    private int nbTours;
     private String equipe;
 
     //Constructeur
@@ -25,6 +26,15 @@ public class Participant {
         this.age = age;
         this.sexe = sexe;
         this.nDossard = nDossard;
+    }
+    public Participant(int id, String nom, String prenom, int age, String sexe, int nDossard, int nbTours) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.sexe = sexe;
+        this.nDossard = nDossard;
+        this.nbTours = nbTours;
     }
 
     //Getter & Setter
@@ -68,6 +78,14 @@ public class Participant {
 
     public void setnDossard(int nDossard) {
         this.nDossard = nDossard;
+    }
+
+    public int getNbTours() {
+        return nbTours;
+    }
+
+    public void setNbTours(int nbTours) {
+        this.nbTours = nbTours;
     }
 
     public String getEquipe() {

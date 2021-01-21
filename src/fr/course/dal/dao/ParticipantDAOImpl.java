@@ -11,16 +11,11 @@ import java.sql.SQLException;
 public class ParticipantDAOImpl extends DAOCRUDImpl<Participant, Integer> {
 
 	public ParticipantDAOImpl() {
-		INSERT = "INSERT INTO Course.Participant (immat,nbPlace) VALUES (?,?)";
-		SELECT = "SELECT idCar,immat,nbPlace FROM car";
-		FROMID = "SELECT idCar,immat,nbPlace FROM car WHERE idCar = ?";
-		UPDATE = "UPDATE car SET immat=?, nbPlace=? WHERE idCar = ?";
-		DELETE = "DELETE FROM car WHERE idCar=?";
-	}
-
-	@Override
-	protected void fillKey(Participant entite, ResultSet keyRs) throws SQLException {
-		entite.setId(keyRs.getInt(1));
+		INSERT = "INSERT INTO Course.Participant (NOM, PRENOM, AGE, SEXE, NUMDOSSARD, EQUIPE) VALUES (?,?,?,?,?,?)";
+		SELECT = "SELECT ID, NOM, PRENOM, AGE, SEXE, NUMDOSSARD, EQUIPE, NBTOURS FROM Course.Participant";
+		FROMID = "SELECT ID, NOM, PRENOM, AGE, SEXE, NUMDOSSARD, EQUIPE, NBTOURS FROM Course.Participant WHERE ID = ?";
+		UPDATE = "UPDATE Course.Participant SET NBTOURS=?";
+		DELETE = "DELETE FROM Course.Participant WHERE ID=?";
 	}
 
 	@Override
@@ -30,51 +25,41 @@ public class ParticipantDAOImpl extends DAOCRUDImpl<Participant, Integer> {
 		stmt.setInt(3, entite.getAge());
 		stmt.setString(4, entite.getSexe());
 		stmt.setInt(5, entite.getnDossard());
-
-	}
-
-	@Override
-	protected void fillStatementForUpdate(PreparedStatement stmt, Participant entite) throws SQLException {
-
-	}
-
-	@Override
-	protected void fillStatementForDelete(PreparedStatement stmt, Participant entite) throws SQLException {
-
+		if(entite.getEquipe() != null){
+			stmt.setString(6, entite.getEquipe());
+		}else{
+			stmt.setString(6, null);
+		}
 	}
 
 	@Override
 	protected Participant createEntityFromResultSet(ResultSet rs) throws SQLException {
-		return new Participant(
+		Participant participant = new Participant(
+				rs.getInt("ID"),
 				rs.getString("nom"),
 				rs.getString("prenom"),
 				rs.getInt("age"),
 				rs.getString("sexe"),
-				rs.getInt("age")
+				rs.getInt("age"),
+				rs.getInt("NBTOURS")
 		);
+		if(rs.getString("EQUIPE") == null) participant.setEquipe(rs.getString("EQUIPE"));
+		return participant;
 	}
 
 	@Override
-	protected void fillKey(Car entite, ResultSet keyRs) throws SQLException {
-		entite.setIdCar(keyRs.getInt(1));
+	protected void fillKey(Participant entite, ResultSet keyRs) throws SQLException {
+		entite.setId(keyRs.getInt(1));
 	}
 
 	@Override
-	protected void fillStatementForInsert(PreparedStatement stmt, Car entite) throws SQLException {
-		stmt.setString(1, entite.getImmat());
-		stmt.setInt(2, entite.getNbPlaces());
+	protected void fillStatementForUpdate(PreparedStatement stmt, Participant entite) throws SQLException {
+		stmt.setInt(1, entite.getNbTours());
 	}
 
 	@Override
-	protected void fillStatementForUpdate(PreparedStatement stmt, Car entite) throws SQLException {
-		stmt.setString(1, entite.getImmat());
-		stmt.setInt(2, entite.getNbPlaces());
-		stmt.setInt(3, entite.getIdCar());
-	}
-
-	@Override
-	protected void fillStatementForDelete(PreparedStatement stmt, Car entite) throws SQLException {
-		stmt.setInt(1, entite.getIdCar());
+	protected void fillStatementForDelete(PreparedStatement stmt, Participant entite) throws SQLException {
+		stmt.setInt(1, entite.getId());
 	}
 
 }
