@@ -7,5 +7,5 @@ import java.util.List;
 public interface CourseManager {
     public Participant addParticipant(Participant participant);
     public List<Participant> getAllParticipants();
-    
+
 }
