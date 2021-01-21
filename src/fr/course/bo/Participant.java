@@ -1,6 +1,7 @@
 package fr.course.bo;
 
 public class Participant {
+    private int id;
     private String nom;
     private String prenom;
     private int age;
@@ -17,15 +18,25 @@ public class Participant {
         this.nDossard = nDossard;
     }
 
+    public Participant(int id, String nom, String prenom, int age, String sexe, int nDossard) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.sexe = sexe;
+        this.nDossard = nDossard;
+    }
+
     //Getter & Setter
 
-    public String getNom() {
-        return nom;
-    }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public String getNom() { return nom; }
+
+    public void setNom(String nom) { this.nom = nom; }
 
     public String getPrenom() {
         return prenom;
