@@ -7,5 +7,6 @@ import java.util.List;
 public interface CourseManager {
     public Participant addParticipant(Participant participant) throws ParticipantManagerException;
     public List<Participant> getAllParticipants() throws ParticipantManagerException;
+    public void tourValided(Participant participant) throws ParticipantManagerException;
     
 }

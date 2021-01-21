@@ -4,6 +4,7 @@
 package fr.course.bll;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.course.bo.Participant;
 import fr.course.dal.DALException;
@@ -52,6 +53,34 @@ public class CourseManagerImpl implements CourseManager{
 			throw new ParticipantManagerException(e.getMessage());
 		}
 		
+	}
+	
+	// 	BL : ajouter la méthode tourValided(Participant) qui incrémente ce nombre de tour
+	
+	@Override
+	public void tourValided(Participant participant) throws ParticipantManagerException {
+		// TODO Auto-generated method stub
+		
+		// 	saisie des passages en entrant un numéro de dossard et en le validant
+		
+		participant.setNbTours(participant.getNbTours()+1);
+		
+		try {
+			participantDAO.update(participant);
+		} catch(DALException e) {
+			e.printStackTrace();
+			throw new ParticipantManagerException(e.getMessage());
+		}
+		
+	}
+	
+	public List<Participant> getClassementBySexe(String sexe) throws ParticipantManagerException {
+		
+		return getAllParticipants().stream().
+									filter(x->x.getSexe() == sexe).
+									sorted((o1, o2)->Integer.valueOf(o1.getNbTours()).compareTo(o2.getNbTours())).
+									collect(Collectors.toList());
+
 	}
 
 }
