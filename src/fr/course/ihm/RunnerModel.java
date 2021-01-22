@@ -22,6 +22,9 @@ public class RunnerModel {
 
     public void update(RunnerView ob) throws ParticipantManagerException {
         listeParticipant = manager.getAllParticipants();
+        for (Participant test:listeParticipant){
+            System.out.println(test.getNom() + " " + test.getPrenom() + " " + test.getSexe() + " " + test.getEquipe());
+        }
         ob.update(this);
     }
 

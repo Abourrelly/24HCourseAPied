@@ -36,7 +36,10 @@ public class RunnerController {
     }
 
     public void ajouterParticipant(String nom, String prenom, String equipe, String sexe, int age, int nDossard) throws ParticipantManagerException {
-        manager.addParticipant(new Participant(0, nom, prenom, age, sexe, nDossard));
+        Participant participant = new Participant(nom, prenom, age, sexe, nDossard);
+        if (!equipe.isEmpty()) participant.setEquipe(equipe);
+        manager.addParticipant(participant);
+        updateAll();
     }
 
 

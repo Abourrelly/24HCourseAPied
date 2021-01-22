@@ -74,8 +74,9 @@ public class RunnerView extends JFrame {
     public void update(RunnerModel model) {
         String tmp = null;
         for (Participant participant : model.getListeParticipant()) {
-            tmp += participant.getNom() + " " + participant.getPrenom() + " " + participant.getEquipe() + " " + participant.getSexe();
+            tmp += participant.getNom() + " " + participant.getPrenom() + " " + participant.getEquipe() + " " + participant.getSexe() + "\n";
         }
+        ParticipantListe.setText(tmp);
     }
 
 
