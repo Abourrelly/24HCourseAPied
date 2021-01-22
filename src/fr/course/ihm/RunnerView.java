@@ -6,7 +6,9 @@ import fr.course.bo.*;
 import fr.course.dal.dao.*;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,8 +38,7 @@ public class RunnerView extends JFrame {
     private JLabel lbEquipe;
     private JLabel lbSexxe;
     private JLabel lbNom;
-    private JScrollPane listeParticipantPanel = new JScrollPane();
-    private JList ParticipantListe;
+    private JTable ParticipantTable;
 
 
     public RunnerView() throws ParticipantManagerException {
@@ -50,7 +51,7 @@ public class RunnerView extends JFrame {
         initIHM();
     }
 
-    private void initIHM() {
+    private void initIHM() throws ParticipantManagerException {
         addButton.addActionListener(e -> {
             try {
                 RunnerController.getInstance().ajouterParticipant(
@@ -66,22 +67,37 @@ public class RunnerView extends JFrame {
             }
         });
 
-        Object[][] donnees = {
-                {"Johnathan", "Sykes", "Color.red", "true", "tenis"},
-                {"Nicolas", "Van de Kampf", "Color.black", "true", "tenis"},
-                {"Damien", "Cuthbert", "Color.cyan", "true", "tenis"},
-                {"Corinne", "Valance", "Color.blue", "false", "tenis"},
-                {"Emilie", "Schrödinger", "Color.magenta", "false", "tenis"},
-                {"Delphine", "Duke", "Color.yellow", "false", "tenis"},
-                {"Eric", "Trump", "Color.pink", "true", "tenis"},
+        this.setContentPane(mainPanel);
+        TableModel dataModel = new AbstractTableModel() {
+            public int getColumnCount() { return 10; }
+            public int getRowCount() { return 10;}
+            public Object getValueAt(int row, int col) { return new Integer(row*col); }
         };
+        JTable table = new JTable(dataModel);
+        JScrollPane scrollpane = new JScrollPane(table);
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
 
-        String[] entetes = {"Prénom", "Nom", "Couleur favorite", "Homme", "Sport"};
-
-        JTable tableau = new JTable(donnees, entetes);
-        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-
-        pack();
+        List<Participant> listparticipant = CourseManagerSing.getInstance().getAllParticipants();
+        Object[][] aze = new Object[listparticipant.size()][8];
+        int index = 0;
+        for(Participant participant : listparticipant){
+            aze[index][0] = participant.getId();
+            aze[index][1] = participant.getNom();
+            aze[index][2] = participant.getPrenom();
+            aze[index][3] = participant.getAge();
+            aze[index][4] = participant.getSexe();
+            aze[index][5] = participant.getnDossard();
+            aze[index][6] = participant.getEquipe();
+            aze[index][7] = participant.getNbTours();
+            index++;
+        }
+        String[] header = { "ID", "NOM", "PRENOM", "AGE", "SEXE", "NUMÉRO DOSSARD", "EQUIPE", "NB TOURS"};
+        ParticipantTable = new JTable(aze, header);
+        panel.add(new JScrollPane(ParticipantTable));
+        frame.add(panel);
+        frame.setSize(550, 400);
+        frame.setVisible(true);
     }
 
 
@@ -97,7 +113,7 @@ public class RunnerView extends JFrame {
                             participant.getEquipe() + " " +
                             participant.getSexe());
         }
-        ParticipantListe.setListData(listeParticipant.toArray());
+        //ParticipantListe.setListData(listeParticipant.toArray());
     }
 
 
