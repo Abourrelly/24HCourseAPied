@@ -43,7 +43,7 @@ public class ParticipantDAOImpl extends DAOCRUDImpl<Participant, Integer> {
 				rs.getInt("age"),
 				rs.getInt("NBTOURS")
 		);
-		if(rs.getString("EQUIPE") == null) participant.setEquipe(rs.getString("EQUIPE"));
+		if(rs.getString("EQUIPE") != null) participant.setEquipe(rs.getString("EQUIPE"));
 		return participant;
 	}
 
