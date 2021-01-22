@@ -10,6 +10,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class RunnerView extends JFrame {
     private JTextField equipeText;
     private JButton listButton;
     private JButton addButton;
-    private JLabel ParticipantListe;
+    //private JLabel ParticipantListe;
     private JSpinner ageText;
     private JLabel lbAge;
     private JSpinner dossardText;
@@ -35,8 +36,8 @@ public class RunnerView extends JFrame {
     private JLabel lbEquipe;
     private JLabel lbSexxe;
     private JLabel lbNom;
-    private JScrollPane listeParticipantPanel;
-    private JScrollPane TablePanel;
+    private JScrollPane listeParticipantPanel = new JScrollPane();
+    private JList ParticipantListe;
 
 
     public RunnerView() throws ParticipantManagerException {
@@ -65,18 +66,38 @@ public class RunnerView extends JFrame {
             }
         });
 
-        this.setContentPane(mainPanel);
+        Object[][] donnees = {
+                {"Johnathan", "Sykes", "Color.red", "true", "tenis"},
+                {"Nicolas", "Van de Kampf", "Color.black", "true", "tenis"},
+                {"Damien", "Cuthbert", "Color.cyan", "true", "tenis"},
+                {"Corinne", "Valance", "Color.blue", "false", "tenis"},
+                {"Emilie", "Schrödinger", "Color.magenta", "false", "tenis"},
+                {"Delphine", "Duke", "Color.yellow", "false", "tenis"},
+                {"Eric", "Trump", "Color.pink", "true", "tenis"},
+        };
+
+        String[] entetes = {"Prénom", "Nom", "Couleur favorite", "Homme", "Sport"};
+
+        JTable tableau = new JTable(donnees, entetes);
+        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
+
+        pack();
     }
 
 
     //Pas de setter, la méthode update remplit cette fonction
 
     public void update(RunnerModel model) {
-        String tmp = null;
+        List<String> listeParticipant = new ArrayList<>();
+
         for (Participant participant : model.getListeParticipant()) {
-            tmp += participant.getNom() + " " + participant.getPrenom() + " " + participant.getEquipe() + " " + participant.getSexe() + "\n";
+            listeParticipant.add(
+                    participant.getNom() + " " +
+                            participant.getPrenom() + " " +
+                            participant.getEquipe() + " " +
+                            participant.getSexe());
         }
-        ParticipantListe.setText(tmp);
+        ParticipantListe.setListData(listeParticipant.toArray());
     }
 
 
@@ -106,10 +127,6 @@ public class RunnerView extends JFrame {
 
     public JButton getAddButton() {
         return addButton;
-    }
-
-    public JScrollPane getTablePanel() {
-        return TablePanel;
     }
 
 }
